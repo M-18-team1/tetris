@@ -1,0 +1,142 @@
+#app {
+    display: flex;
+    & > *:first-child {
+      margin-right: 20px;
+    }
+    position: relative;
+  }
+  .board {
+    padding: 30px;
+    background: #1c1c1c;
+    position: relative;
+  }
+  .block {
+    width: 30px;
+    height: 30px;
+    background: #252525;
+    border: 0.1px solid rgba(0, 0, 0, 0.2);
+    &-i {
+      background: #3498db;
+    }
+    &-o {
+      background: #f1c40f;
+    }
+    &-t {
+      background: #9b59b6;
+    }
+    &-j {
+      background: #1e3799;
+    }
+    &-l {
+      background: #e67e22;
+    }
+    &-s {
+      background: #2ecc71;
+    }
+    &-z {
+      background: #e74c3c;
+    }
+  }
+  .block-disp {
+    padding : 15px;
+    background: #1c1c1c;
+    > h2 {
+      color: #bdc3c7;
+      font-size: 12px;
+    }
+    .block {
+      width : 20px;
+      height: 20px;
+    }
+  }
+  .gameover {
+    display: block;
+    position: absolute;
+    top: calc(50% - 50px);
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 0;
+    color: #f39c12;
+    background: #222;
+    opacity: 0.9;
+  }
+  
+  .num-disp {
+    padding: 10px;
+    background: #1c1c1c;
+    > h2 {
+      color: #bdc3c7;
+      font-size: 12px;
+    }
+    > p {
+      background: #252525;
+      padding: 7px;
+      color: #fff;
+    }
+  }
+  
+  .start {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    outline: none;
+    background: #16a085;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+  }
+  
+  body {
+    background: #333;
+  }
+  
+  .description {
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    z-index : 100;
+    padding: 50px;
+    > h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+    > h3 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    > ul {
+      margin-left: 30px;
+      margin-bottom: 40px;
+      > li {
+        line-height: 30px;
+      }
+    }
+  }
+  
+  a {
+    cursor: pointer;
+    color: #16a085;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+  .description-enter-active,
+  .description-leave-active {
+    transition: all 0.6s;
+  }
+  .description-enter,
+  .description-leave-to {
+    opacity: 0;
+  }

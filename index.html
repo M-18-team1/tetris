@@ -1,0 +1,72 @@
+<div id="app">
+    <div class="board">
+      <table>
+        <tr v-for="(b, i) in display" :key="i">
+          <td 
+               v-for="(c, j) in b" 
+               :key="j" 
+               class="block" 
+               :class="c | blockClass"
+               />
+        </tr>
+      </table>
+      <div class="gameover" v-if="gameover">
+        <span>GAME OVER</span>
+      </div>
+    </div>
+    <div>
+      <div class="block-disp">
+        <h2>Next</h2>
+        <table>
+          <tr v-for="(b, i) in nextBlock" :key="i">
+            <td v-for="(c, j) in b" :key="j" class="block" :class="c | blockClass"></td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      <div class="block-disp">
+        <h2>Stock</h2>
+        <table>
+          <tr v-for="(b, i) in stockBlock" :key="i">
+            <td v-for="(c, j) in b" :key="j" class="block" :class="c | blockClass"></td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      <div class="num-disp">
+        <h2>Score</h2>
+        <p>{{score}}</p>
+      </div>
+      <br>
+      <div class="num-disp">
+        <h2>Level</h2>
+        <p>{{level}}</p>
+      </div>
+      <br>
+      <button :disabled="started" @click="start" class="start">Start</button>
+      <br>
+      <a class="description-link" @click="description=true">あそびかた</a>
+    </div>
+    <transition name="description">
+      <div class="description" v-if="description">
+        <h2>あそびかた</h2>
+        <h3>キー操作</h3>
+        <ul>
+          <li>← : 左移動</li>
+          <li>→ : 右移動</li>
+          <li>↓ : ソフトドロップ</li>
+          <li>↑ : ハードドロップ</li>
+          <li>Space : 回転</li>
+          <li>Shift : ストック</li>
+        </ul>
+        <h3>Score</h3>
+        <ul>
+          <li>1ライン : 10</li>
+          <li>2ライン : 80</li>
+          <li>3ライン : 270</li>
+          <li>4ライン : 640</li>
+        </ul>
+        <a @click="description=false">閉じる</a>
+      </div>
+    </transition>
+  </div>
