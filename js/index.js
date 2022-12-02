@@ -83,6 +83,16 @@ let data = {
   score: 0,
   level: 1,
   description: false,
+  
+  // キーコンフィグの変数を管理
+  handolkey: {
+    keyright: 39,
+    keyleft: 37,
+    keybownbottom: 38,
+    keydown: 40,
+    keysetStock: 16,
+    keyrotate: 32
+  },
 };
 /*********************************************
    メソッドオブジェクト
@@ -207,30 +217,31 @@ let methods = {
   /*
    * キー操作
    */
+
   handleKeydown(event) {
     event.preventDefault();
     //右移動
-    if (event.keyCode === 39) {
+    if (event.keyCode === this.handolkey.keyright) {
       this.right();
     }
     //左移動
-    else if (event.keyCode === 37) {
+    else if (event.keyCode === this.handolkey.keyleft) {
       this.left();
     }
     //最下移動
-    else if (event.keyCode === 38) {
+    else if (event.keyCode === this.handolkey.keybownbottom) {
       this.downBottom();
     }
     //下移動
-    else if (event.keyCode === 40) {
+    else if (event.keyCode === this.handolkey.keydown) {
       this.down();
     }
     //ストック
-    else if (event.keyCode === 16) {
+    else if (event.keyCode === this.handolkey.keysetStock) {
       this.setStock();
     }
     //回転
-    else if (event.keyCode === 32) {
+    else if (event.keyCode === this.handolkey.keyrotate) {
       this.rotate();
     }
   },
