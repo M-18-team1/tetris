@@ -101,10 +101,10 @@ let data = {
     skill0: 0,
   },
   // キーコンフィグの変数を管理
-  handolkey: {
+  handlekey: {
     keyright: 39,
     keyleft: 37,
-    keybownbottom: 38,
+    keydownbottom: 38,
     keydown: 40,
     keysetStock: 16,
     keyrotate: 32,
@@ -166,6 +166,10 @@ let methods = {
       type: 0,
       stocked: false,
     };
+    // すべてのスキルの使用可能回数を0に初期化
+    Object.keys(this.skills).forEach((skill) => {
+      this.skills[skill] = 0;
+    })
   },
   /*
    * ブロックを配備
@@ -238,29 +242,29 @@ let methods = {
   handleKeydown(event) {
     event.preventDefault();
     //右移動
-    if (event.keyCode === this.handolkey.keyright) {
+    if (event.keyCode === this.handlekey.keyright) {
       this.right();
     }
     //左移動
-    else if (event.keyCode === this.handolkey.keyleft) {
+    else if (event.keyCode === this.handlekey.keyleft) {
       this.left();
     }
     //最下移動
-    else if (event.keyCode === this.handolkey.keybownbottom) {
+    else if (event.keyCode === this.handlekey.keydownbottom) {
       this.downBottom();
     }
     //下移動
-    else if (event.keyCode === this.handolkey.keydown) {
+    else if (event.keyCode === this.handlekey.keydown) {
       this.down();
     }
     //ストック
-    else if (event.keyCode === this.handolkey.keysetStock) {
+    else if (event.keyCode === this.handlekey.keysetStock) {
       this.setStock();
     }
     //回転
-    else if (event.keyCode === this.handolkey.keyrotate) {
+    else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    } else if (event.keyCode === this.handolkey.keyuseSkill) {
+    } else if (event.keyCode === this.handlekey.keyuseSkill) {
       this.useSkill();
     }
   },
