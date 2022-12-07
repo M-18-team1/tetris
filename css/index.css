@@ -39,6 +39,9 @@
 .block-z {
   background: #e74c3c;
 }
+.block-8 {
+  background: #ff00ff;
+}
 
 .block-disp {
   padding: 15px;
@@ -85,7 +88,7 @@
 .start {
   display: block;
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   border: none;
   outline: none;
   background: #16a085;

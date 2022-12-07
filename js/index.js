@@ -55,6 +55,18 @@ const blocks = {
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
   ],
+  // スキル: 8マスバー生成
+  8: [
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 8, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
 };
 
 /*********************************************
@@ -83,7 +95,11 @@ let data = {
   score: 0,
   level: 1,
   description: false,
-  
+  option: false,
+  // スキル0の使用回数
+  skills: {
+    skill0: 0,
+  },
   // キーコンフィグの変数を管理
   handolkey: {
     keyright: 39,
@@ -91,7 +107,8 @@ let data = {
     keybownbottom: 38,
     keydown: 40,
     keysetStock: 16,
-    keyrotate: 32
+    keyrotate: 32,
+    keyuseSkill: 65,
   },
 };
 /*********************************************
@@ -243,6 +260,8 @@ let methods = {
     //回転
     else if (event.keyCode === this.handolkey.keyrotate) {
       this.rotate();
+    } else if (event.keyCode === this.handolkey.keyuseSkill) {
+      this.useSkill();
     }
   },
   /*
@@ -315,6 +334,16 @@ let methods = {
     while (this.down()) {}
   },
   /*
+   * スキルの使用
+   */
+  useSkill() {
+    if (this.skills.skill0 >= 1) {
+      this.skills.skill0 -= 1;
+      this.block.type = this.next;
+      this.next = 8;
+    }
+  },
+  /*
    * 移動可否判定
    */
   canMove(block, x, y) {
@@ -385,6 +414,10 @@ let methods = {
    */
   setScore(num) {
     this.score += 10 * num ** 3;
+    if(num >=2){
+      this.skills.skill0 += num-1;
+    }
+    
   },
 };
 /*********************************************
@@ -461,6 +494,8 @@ const app = new Vue({
           return "block-s";
         case 7:
           return "block-z";
+        case 8:
+          return "block-8";
         default:
           return "";
       }
