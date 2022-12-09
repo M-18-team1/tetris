@@ -96,9 +96,11 @@ let data = {
   level: 1,
   description: false,
   option: false,
-  // スキル0の使用回数
+  // スキルの使用回数
   skills: {
     skill0: 0,
+    skill1: 0,
+    skill2: 0,
   },
   // キーコンフィグの変数を管理
   handlekey: {
