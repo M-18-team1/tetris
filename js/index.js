@@ -68,7 +68,29 @@ const blocks = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
 };
-
+//説明用
+const testBoard = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+];
 /*********************************************
    データオブジェクト
   *********************************************/
@@ -108,9 +130,11 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,
-    keyrotate: 32,
-    keyuseSkill: 65,
+    keysetStock: 16,  //Shift
+    keyrotate: 32,    //Space
+    keyuseSkill0: 65, //A
+    keyCheat: 80,     //P(skillStock:10 + TestBoard)
+    keyRestart: 82,   //Restart
   },
 };
 /*********************************************
@@ -186,8 +210,19 @@ let methods = {
    * ブロック初期化
    */
   initBlock() {
-    this.block.x = 2;
-    this.block.y = this.block.type === 1 ? 0 : -1;
+    switch (this.block.type) {
+      case 1:
+        this.block.x = 2;
+        this.block.y = 0;
+        break;
+      case 8:
+        this.block.x = 0;
+        this.block.y = 0;
+        break;
+      default:
+        this.block.x = 2;
+        this.block.y = -1;
+    }
     this.block.data = JSON.parse(JSON.stringify(blocks[this.block.type]));
     while (this.isOverlap()) {
       this.block.y -= 1;
@@ -266,8 +301,18 @@ let methods = {
     //回転
     else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    } else if (event.keyCode === this.handlekey.keyuseSkill) {
-      this.useSkill();
+    }
+    //スキル使用
+    else if (event.keyCode === this.handlekey.keyuseSkill0) {
+      this.useSkill0();
+    }
+    //チート
+    else if (event.keyCode === this.handlekey.keyCheat) {
+      this.useCheat();
+    }
+    //リスタート
+    else if (event.keyCode === this.handlekey.keyRestart) {
+      this.start();
     }
   },
   /*
@@ -340,14 +385,32 @@ let methods = {
     while (this.down()) {}
   },
   /*
+   * idxブロックを現在のブロックと置き換え
+  */
+  setNewBlock(idx) {
+    this.block.type = idx;
+    this.initBlock();
+  },
+  /*
    * スキルの使用
    */
-  useSkill() {
+  useSkill0() {
     if (this.skills.skill0 >= 1) {
       this.skills.skill0 -= 1;
-      this.block.type = this.next;
-      this.next = 8;
+      this.setNewBlock(8);
     }
+  },
+  /*
+   * チート
+  */
+  useCheat() {
+    this.clear();
+    this.setNext();
+    this.setBlock();
+    this.started = true;
+    this.skills.skill0 = this.skills.skill1 = this.skills.skill2 = 10;
+    this.board.data = testBoard;
+    this.resetTimer();
   },
   /*
    * 移動可否判定
