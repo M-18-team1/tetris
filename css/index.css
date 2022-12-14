@@ -3,12 +3,12 @@
   justify-content: center;
 }
 #app > *:first-child {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .board {
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   background: #1c1c1c;
   position: relative;
 }
@@ -46,7 +46,7 @@
 
 .block-disp {
   border-radius: 10px;
-  margin: 0 0 20px;
+  margin: 0 0 10px;
   padding: 10px;
   background: #1c1c1c;
 }
