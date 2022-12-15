@@ -96,27 +96,58 @@ let data = {
   level: 1,
   description: false,
   option: false,
+  //キャラクター
+  characters: {
+    chara_now: {
+      name: "Tester0",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "",
+    },
+    chara0: {
+      name: "Tester0",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "トリオミノ",
+    },
+    chara1: {
+      name: "Tester1",
+      skill0: "",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+    chara2: {
+      name: "Tester2",
+      skill0: "",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+  },
   skills: {
     //使用可能なコストの数を示す
-    cost: 0,
+    cost: 10,
     //skills,passiveの数字はスキルの種類を示す（使用回数ではない）
     //小
-    skill0: {
-      name: "8マスバー生成",
-      cost: 1,
-    },
-    //中
-    skill1: {
-      name: "",
-      cost: 5,
-    },
-    //大
-    skill2: {
-      name: "",
-      cost: 8,
-    },
+    // skill0: {
+    //   name: "8マスバー生成",
+    //   cost: 1,
+    // },
+    // //中
+    // skill1: {
+    //   name: "スキル中",
+    //   cost: 5,
+    // },
+    // //大
+    // skill2: {
+    //   name: "スキル大",
+    //   cost: 8,
+    // },
     //パッシブ
-    passive: "なし",
+    // passive: "なし",
   },
   // キーコンフィグの変数を管理
   handlekey: {
@@ -185,11 +216,14 @@ let methods = {
       stocked: false,
     };
     //コストを0に初期化
-    this.cost = 0;
+    this.skills.cost = 10;
     // // すべてのスキルの使用可能回数を0に初期化
     // Object.keys(this.skills).forEach((skill) => {
     //   this.skills[skill] = 0;
     // });
+
+    //選択されたキャラクターを最初のキャラクターに
+    this.characters.chara_now = this.characters.chara0;
   },
   /*
    * ブロックを配備
@@ -360,27 +394,60 @@ let methods = {
   /*
    * スキルの使用
    */
+  //スキル小
   useSkill0() {
     // if (this.skills.skill0 >= 1) {
     //   this.skills.skill0 -= 1;
     //   this.block.type = this.next;
     //   this.next = 8;
     // }
-    switch (this.skills.skill0.name) {
-      case "8マスバー生成":{
-        if(this.skills.skill0.cost <= this.skills.cost){
-        this.block.type = this.next;
-        this.next = 8;
+    let skill_cost = 1;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill0) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "8マスバー生成": {
+          this.block.type = this.next;
+          if (this.next != 8) {
+            this.next = 8;
+            this.skills.cost -= skill_cost;
+          }
+        }
+      }
+    }
+  },
+  //スキル中
+  useSkill1() {
+    let skill_cost = 5;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill1) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  //スキル大
+  useSkill2() {
+    let skill_cost = 8;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill2) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
         }
       }
     }
   },
   setPassiveSkill() {
-    switch (this.skills.passive) {
+    switch (this.characters.chara_now.passive) {
       case "なし": {
       }
       case "トリオミノ": {
-        
       }
     }
   },
@@ -501,6 +568,7 @@ let computed = {
   stockBlock() {
     return blocks[this.stock.type];
   },
+
 };
 
 const app = new Vue({
@@ -510,9 +578,13 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
+    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
+    //***** characterを設定する
+
+    //*****
   },
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleKeydown);
