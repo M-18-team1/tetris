@@ -68,7 +68,29 @@ const blocks = {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
 };
-
+//説明用
+const testBoard = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+];
 /*********************************************
    データオブジェクト
   *********************************************/
@@ -238,8 +260,19 @@ let methods = {
    * ブロック初期化
    */
   initBlock() {
-    this.block.x = 2;
-    this.block.y = this.block.type === 1 ? 0 : -1;
+    switch (this.block.type) {
+      case 1:
+        this.block.x = 2;
+        this.block.y = 0;
+        break;
+      case 8:
+        this.block.x = 0;
+        this.block.y = 0;
+        break;
+      default:
+        this.block.x = 2;
+        this.block.y = -1;
+    }
     this.block.data = JSON.parse(JSON.stringify(blocks[this.block.type]));
     while (this.isOverlap()) {
       this.block.y -= 1;
@@ -321,6 +354,14 @@ let methods = {
     } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
+    // //チート
+    // else if (event.keyCode === this.handlekey.keyCheat) {
+    //   this.useCheat();
+    // }
+    // //リスタート
+    // else if (event.keyCode === this.handlekey.keyRestart) {
+    //   this.start();
+    // }
   },
   /*
    * 右移動
@@ -392,6 +433,13 @@ let methods = {
     while (this.down()) {}
   },
   /*
+   * idxブロックを現在のブロックと置き換え
+  */
+  setNewBlock(idx) {
+    this.block.type = idx;
+    this.initBlock();
+  },
+  /*
    * スキルの使用
    */
   //スキル小
@@ -408,11 +456,8 @@ let methods = {
         // ここに処理を書く
         // }
         case "8マスバー生成": {
-          this.block.type = this.next;
-          if (this.next != 8) {
-            this.next = 8;
-            this.skills.cost -= skill_cost;
-          }
+          this.skills.cost -= skill_cost;
+          this.setNewBlock(8);
         }
       }
     }
@@ -450,6 +495,18 @@ let methods = {
       case "トリオミノ": {
       }
     }
+  },
+  /*
+   * チート
+  */
+  useCheat() {
+    this.clear();
+    this.setNext();
+    this.setBlock();
+    this.started = true;
+    this.skills.skill0 = this.skills.skill1 = this.skills.skill2 = 10;
+    this.board.data = testBoard;
+    this.resetTimer();
   },
   /*
    * 移動可否判定
