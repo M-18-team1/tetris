@@ -129,14 +129,14 @@ let data = {
     },
     chara0: {
       name: "Tester0",
-      skill0: "8マスバー生成",
+      skill0: "鏡反転",
       skill1: "",
       skill2: "",
       passive: "トリオミノ",
     },
     chara1: {
       name: "Tester1",
-      skill0: "",
+      skill0: "鏡反転",
       skill1: "",
       skill2: "",
       passive: "なし",
@@ -363,6 +363,9 @@ let methods = {
     //   this.start();
     // }
   },
+  selectChange(event) {
+    console.log(event.currentTerget.value);
+  },
   /*
    * 右移動
    */
@@ -439,6 +442,23 @@ let methods = {
     this.block.type = idx;
     this.initBlock();
   },
+  mirroring() {
+    // Z or L
+    switch(this.block.type) {
+      case 4:
+        this.setNewBlock(5);
+        break;
+      case 5:
+        this.setNewBlock(4);
+        break;
+      case 6:
+        this.setNewBlock(7);
+        break;
+      case 7:
+        this.setNewBlock(6);
+        break;
+    }
+  },
   /*
    * スキルの使用
    */
@@ -458,6 +478,12 @@ let methods = {
         case "8マスバー生成": {
           this.skills.cost -= skill_cost;
           this.setNewBlock(8);
+          break;
+        }
+        case "鏡反転": {
+          this.skills.cost -= skill_cost;
+          this.mirroring();
+          break;
         }
       }
     }
@@ -635,12 +661,10 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
-    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
     //***** characterを設定する
-
     //*****
   },
   beforeDestroy() {
