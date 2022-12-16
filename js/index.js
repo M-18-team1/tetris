@@ -131,9 +131,8 @@ let data = {
     keydownbottom: 38,
     keydown: 40,
     keysetStock: 16,
-    keyrotate: 32,    keyuseSkill0: 65,
-    // keyCheat: 80,     //P(skillStock:10 + TestBoard)
-    // keyRestart: 82,   //Restart
+    keyrotate: 32,
+    keyuseSkill0: 65,
   },
 };
 /*********************************************
@@ -300,9 +299,7 @@ let methods = {
     //回転
     else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    }
-    //スキル使用
-    else if (event.keyCode === this.handlekey.keyuseSkill0) {
+    } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
     // //チート
@@ -393,6 +390,7 @@ let methods = {
   /*
    * スキルの使用
    */
+  //スキル小
   useSkill0() {
     // if (this.skills.skill0 >= 1) {
     //   this.skills.skill0 -= 1;
