@@ -130,11 +130,10 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,  //Shift
-    keyrotate: 32,    //Space
-    keyuseSkill0: 65, //A
-    keyCheat: 80,     //P(skillStock:10 + TestBoard)
-    keyRestart: 82,   //Restart
+    keysetStock: 16,
+    keyrotate: 32,    keyuseSkill0: 65,
+    // keyCheat: 80,     //P(skillStock:10 + TestBoard)
+    // keyRestart: 82,   //Restart
   },
 };
 /*********************************************
@@ -306,14 +305,14 @@ let methods = {
     else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
-    //チート
-    else if (event.keyCode === this.handlekey.keyCheat) {
-      this.useCheat();
-    }
-    //リスタート
-    else if (event.keyCode === this.handlekey.keyRestart) {
-      this.start();
-    }
+    // //チート
+    // else if (event.keyCode === this.handlekey.keyCheat) {
+    //   this.useCheat();
+    // }
+    // //リスタート
+    // else if (event.keyCode === this.handlekey.keyRestart) {
+    //   this.start();
+    // }
   },
   /*
    * 右移動
@@ -395,9 +394,56 @@ let methods = {
    * スキルの使用
    */
   useSkill0() {
-    if (this.skills.skill0 >= 1) {
-      this.skills.skill0 -= 1;
-      this.setNewBlock(8);
+    // if (this.skills.skill0 >= 1) {
+    //   this.skills.skill0 -= 1;
+    //   this.block.type = this.next;
+    //   this.next = 8;
+    // }
+    let skill_cost = 1;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill0) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "8マスバー生成": {
+          this.skills.cost -= skill_cost;
+          this.setNewBlock(8);
+        }
+      }
+    }
+  },
+  //スキル中
+  useSkill1() {
+    let skill_cost = 5;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill1) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  //スキル大
+  useSkill2() {
+    let skill_cost = 8;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill2) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  setPassiveSkill() {
+    switch (this.characters.chara_now.passive) {
+      case "なし": {
+      }
+      case "トリオミノ": {
+      }
     }
   },
   /*
