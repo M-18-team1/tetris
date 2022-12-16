@@ -96,11 +96,58 @@ let data = {
   level: 1,
   description: false,
   option: false,
-  // スキルの使用回数
+  //キャラクター
+  characters: {
+    chara_now: {
+      name: "Tester0",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "",
+    },
+    chara0: {
+      name: "Tester0",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "トリオミノ",
+    },
+    chara1: {
+      name: "Tester1",
+      skill0: "",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+    chara2: {
+      name: "Tester2",
+      skill0: "",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+  },
   skills: {
-    skill0: 0,
-    skill1: 0,
-    skill2: 0,
+    //使用可能なコストの数を示す
+    cost: 10,
+    //skills,passiveの数字はスキルの種類を示す（使用回数ではない）
+    //小
+    // skill0: {
+    //   name: "8マスバー生成",
+    //   cost: 1,
+    // },
+    // //中
+    // skill1: {
+    //   name: "スキル中",
+    //   cost: 5,
+    // },
+    // //大
+    // skill2: {
+    //   name: "スキル大",
+    //   cost: 8,
+    // },
+    //パッシブ
+    // passive: "なし",
   },
   // キーコンフィグの変数を管理
   handlekey: {
@@ -110,7 +157,7 @@ let data = {
     keydown: 40,
     keysetStock: 16,
     keyrotate: 32,
-    keyuseSkill: 65,
+    keyuseSkill0: 65,
   },
 };
 /*********************************************
@@ -168,10 +215,15 @@ let methods = {
       type: 0,
       stocked: false,
     };
-    // すべてのスキルの使用可能回数を0に初期化
-    Object.keys(this.skills).forEach((skill) => {
-      this.skills[skill] = 0;
-    })
+    //コストを0に初期化
+    this.skills.cost = 10;
+    // // すべてのスキルの使用可能回数を0に初期化
+    // Object.keys(this.skills).forEach((skill) => {
+    //   this.skills[skill] = 0;
+    // });
+
+    //選択されたキャラクターを最初のキャラクターに
+    this.characters.chara_now = this.characters.chara0;
   },
   /*
    * ブロックを配備
@@ -266,8 +318,8 @@ let methods = {
     //回転
     else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    } else if (event.keyCode === this.handlekey.keyuseSkill) {
-      this.useSkill();
+    } else if (event.keyCode === this.handlekey.keyuseSkill0) {
+      this.useSkill0();
     }
   },
   /*
@@ -342,11 +394,61 @@ let methods = {
   /*
    * スキルの使用
    */
-  useSkill() {
-    if (this.skills.skill0 >= 1) {
-      this.skills.skill0 -= 1;
-      this.block.type = this.next;
-      this.next = 8;
+  //スキル小
+  useSkill0() {
+    // if (this.skills.skill0 >= 1) {
+    //   this.skills.skill0 -= 1;
+    //   this.block.type = this.next;
+    //   this.next = 8;
+    // }
+    let skill_cost = 1;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill0) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "8マスバー生成": {
+          this.block.type = this.next;
+          if (this.next != 8) {
+            this.next = 8;
+            this.skills.cost -= skill_cost;
+          }
+        }
+      }
+    }
+  },
+  //スキル中
+  useSkill1() {
+    let skill_cost = 5;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill1) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  //スキル大
+  useSkill2() {
+    let skill_cost = 8;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.characters.chara_now.skill2) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  setPassiveSkill() {
+    switch (this.characters.chara_now.passive) {
+      case "なし": {
+      }
+      case "トリオミノ": {
+      }
     }
   },
   /*
@@ -420,10 +522,9 @@ let methods = {
    */
   setScore(num) {
     this.score += 10 * num ** 3;
-    if(num >=2){
-      this.skills.skill0 += num-1;
+    if (num >= 2) {
+      this.skills.cost += num - 1;
     }
-    
   },
 };
 /*********************************************
@@ -467,6 +568,7 @@ let computed = {
   stockBlock() {
     return blocks[this.stock.type];
   },
+
 };
 
 const app = new Vue({
@@ -476,9 +578,13 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
+    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
+    //***** characterを設定する
+
+    //*****
   },
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleKeydown);

@@ -17,6 +17,7 @@
             />
           </tr>
         </table>
+        <button :disabled="started" @click="start" class="start">Start</button>
         <a class="description-link block-disp" @click="description=true">
           あそびかた
         </a>
@@ -54,23 +55,39 @@
         <div class="block-disp">
           <h2>Skill</h2>
           <ul class="child-disp">
-            <li>スキル小: 8マスバー生成: {{skills.skill0}}</li>
-            <li>スキル中: {{skills.skill1}}</li>
-            <li>スキル大: {{skills.skill2}}</li>
+            <li>コスト: {{skills.cost}}</li>
+            <li>{{characters.chara_now.skill0}}: 1</li>
+            <li>{{characters.chara_now.skill1}}: 5</li>
+            <li>{{characters.chara_now.skill2}}: 8</li>
+            <li>Passive: {{characters.chara_now.passive}}</li>
           </ul>
         </div>
-        <div class="block-disp">
+        <div class="block-disp" style="margin-bottom: 0">
           <h2>Status</h2>
           <ul class="child-disp">
+            <li class="">
+              Character:
+
+              <select
+                name="charaSelect"
+              >
+                <option :value="characters.chara0">
+                  {{characters.chara0.name}}
+                </option>
+                <option :value="characters.chara1">
+                  {{characters.chara1.name}}
+                </option>
+                <option :value="characters.chara2">
+                  {{characters.chara2.name}}
+                </option>
+              </select>
+            </li>
             <li class="">Score: {{score}}</li>
             <li class="">Level: {{level}}</li>
           </ul>
         </div>
-
-        <button :disabled="started" @click="start" class="start">Start</button>
-
-        <!-- <a class="description-link" @click="option=true">オプション</a> -->
       </div>
+
       <transition name="description">
         <div class="description" v-if="description">
           <h2>あそびかた</h2>
@@ -94,15 +111,8 @@
           <a @click="description=false">閉じる</a>
         </div>
       </transition>
-
-      <transition name="option">
-        <div class="description" v-if="option">
-          <h2>設定</h2>
-
-          <a @click="option=false">閉じる</a>
-        </div>
-      </transition>
     </div>
+    <script></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="./js/index.js"></script>
   </body>
