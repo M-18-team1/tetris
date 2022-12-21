@@ -67,6 +67,21 @@ const blocks = {
     [0, 0, 0, 0, 8, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
+  // パッシブ: トリオミノ
+  9: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 9, 0, 0],
+    [0,9, 9, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  10: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
 };
 //説明用
 const testBoard = [
@@ -316,6 +331,7 @@ let methods = {
       }
     }
     this.next = Math.floor(Math.random() * 7) + 1;
+    this.setPassiveSkillBlocks();
   },
   /*
    * ストックを設定
@@ -448,7 +464,7 @@ let methods = {
   },
   /*
    * idxブロックを現在のブロックと置き換え
-  */
+   */
   setNewBlock(idx) {
     this.block.type = idx;
     this.initBlock();
@@ -460,6 +476,25 @@ let methods = {
     this.fixorder = true;
     this.counter = 0;
     this.setNext();
+  },
+  /*
+   * 鏡反転
+  */
+  mirroring() {
+    // Z or L
+    switch (this.block.type) {
+      case 4:
+        this.setNewBlock(5);
+        break;
+      case 5:
+        this.setNewBlock(4);
+        break;
+      case 6:
+        this.setNewBlock(7);
+        break;
+      case 7:
+        this.setNewBlock(6);
+        break;
   },
   /*
    * スキルの使用
@@ -478,8 +513,11 @@ let methods = {
         // ここに処理を書く
         // }
         case "8マスバー生成": {
-          this.skills.cost -= skill_cost;
-          this.setNewBlock(8);
+          if (this.block.type != 8) {
+            this.skills.cost -= skill_cost;
+            this.setNewBlock(8);
+          }
+          break;
         }
         case "七種一巡": {
           this.skills.cost -= skill_cost;
@@ -514,17 +552,16 @@ let methods = {
       }
     }
   },
-  setPassiveSkill() {
+  setPassiveSkillBlocks() {
     switch (this.characters.chara_now.passive) {
-      case "なし": {
-      }
       case "トリオミノ": {
+        this.next = Math.floor(Math.random() * 2) + 9;
       }
     }
   },
   /*
    * チート
-  */
+   */
   useCheat() {
     this.clear();
     this.setNext();
@@ -651,7 +688,6 @@ let computed = {
   stockBlock() {
     return blocks[this.stock.type];
   },
-
 };
 
 const app = new Vue({
@@ -691,6 +727,10 @@ const app = new Vue({
           return "block-z";
         case 8:
           return "block-8";
+        case 9:
+          return "block-3-i";
+        case 10:
+          return "block-3-j";
         default:
           return "";
       }
