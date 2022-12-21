@@ -67,6 +67,21 @@ const blocks = {
     [0, 0, 0, 0, 8, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
+  // パッシブ: トリオミノ
+  9: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 9, 0, 0],
+    [0,9, 9, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  10: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
 };
 //説明用
 const testBoard = [
@@ -302,6 +317,7 @@ let methods = {
   setNext() {
     this.block.type = this.next;
     this.next = Math.floor(Math.random() * 7) + 1;
+    this.setPassiveSkillBlocks();
   },
   /*
    * ストックを設定
@@ -513,11 +529,10 @@ let methods = {
       }
     }
   },
-  setPassiveSkill() {
+  setPassiveSkillBlocks() {
     switch (this.characters.chara_now.passive) {
-      case "なし": {
-      }
       case "トリオミノ": {
+        this.next = Math.floor(Math.random() * 2) + 9;
       }
     }
   },
@@ -687,6 +702,10 @@ const app = new Vue({
           return "block-z";
         case 8:
           return "block-8";
+        case 9:
+          return "block-3-i";
+        case 10:
+          return "block-3-j";
         default:
           return "";
       }
