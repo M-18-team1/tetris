@@ -43,6 +43,12 @@
 .block-8 {
   background: #ff00ff;
 }
+.block-3-i {
+  background: #ff0000;
+}
+.block-3-j {
+  background: #00ffff;
+}
 
 .block-disp {
   border-radius: 10px;
