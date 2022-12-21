@@ -434,7 +434,7 @@ let methods = {
   },
   /*
    * idxブロックを現在のブロックと置き換え
-  */
+   */
   setNewBlock(idx) {
     this.block.type = idx;
     this.initBlock();
@@ -456,8 +456,10 @@ let methods = {
         // ここに処理を書く
         // }
         case "8マスバー生成": {
-          this.skills.cost -= skill_cost;
-          this.setNewBlock(8);
+          if (this.block.type != 8) {
+            this.skills.cost -= skill_cost;
+            this.setNewBlock(8);
+          }
         }
       }
     }
@@ -498,7 +500,7 @@ let methods = {
   },
   /*
    * チート
-  */
+   */
   useCheat() {
     this.clear();
     this.setNext();
@@ -625,7 +627,6 @@ let computed = {
   stockBlock() {
     return blocks[this.stock.type];
   },
-
 };
 
 const app = new Vue({
@@ -635,7 +636,6 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
-    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
