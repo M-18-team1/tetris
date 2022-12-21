@@ -118,6 +118,7 @@ let data = {
   level: 1,
   description: false,
   option: false,
+  revival: false,
   //キャラクター
   characters: {
     chara_now: {
@@ -200,9 +201,15 @@ let methods = {
    * 終了処理
    */
   end() {
-    this.started = false;
-    this.gameover = true;
-    this.stopTimer();
+    if (this.revival) {
+      this.revive();
+      return true;
+    } else {
+      this.started = false;
+      this.gameover = true;
+      this.stopTimer();
+      return;
+    }
   },
   /*
    * タイマーセット
@@ -416,8 +423,8 @@ let methods = {
     //ゲームオーバー判定
     const g = this.block.type === 1 ? 0 : -1;
     if (this.block.y < g) {
-      this.end();
-      return;
+      this.revival = true;
+      return this.end();
     }
     //ブロック配置
     this.stock.stocked = false;
@@ -518,6 +525,13 @@ let methods = {
       case "トリオミノ": {
       }
     }
+  },
+  revive() {
+    for (let i = 0; i < 4; i++) {
+      this.board.data[i] = this.board.data[i].map((row) => 0);
+      this.revival = false;
+      console.log('revive');
+    } 
   },
   /*
    * チート
