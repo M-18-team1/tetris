@@ -434,14 +434,14 @@ let methods = {
   },
   /*
    * idxブロックを現在のブロックと置き換え
-  */
+   */
   setNewBlock(idx) {
     this.block.type = idx;
     this.initBlock();
   },
   mirroring() {
     // Z or L
-    switch(this.block.type) {
+    switch (this.block.type) {
       case 4:
         this.setNewBlock(5);
         break;
@@ -473,8 +473,10 @@ let methods = {
         // ここに処理を書く
         // }
         case "8マスバー生成": {
-          this.skills.cost -= skill_cost;
-          this.setNewBlock(8);
+          if (this.block.type != 8) {
+            this.skills.cost -= skill_cost;
+            this.setNewBlock(8);
+          }
           break;
         }
         case "鏡反転": {
@@ -521,7 +523,7 @@ let methods = {
   },
   /*
    * チート
-  */
+   */
   useCheat() {
     this.clear();
     this.setNext();
@@ -648,7 +650,6 @@ let computed = {
   stockBlock() {
     return blocks[this.stock.type];
   },
-
 };
 
 const app = new Vue({
