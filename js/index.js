@@ -490,6 +490,7 @@ let methods = {
       case 7:
         this.setNewBlock(6);
         break;
+    }
   },
   /*
    * スキルの使用
