@@ -107,6 +107,8 @@ let data = {
     y: 0,
   },
   next: 0,
+  fixorder: false,
+  counter: 0,
   stock: {
     type: 0,
     stocked: false,
@@ -129,14 +131,14 @@ let data = {
     },
     chara0: {
       name: "Tester0",
-      skill0: "8マスバー生成",
+      skill0: "七種一巡",
       skill1: "",
       skill2: "",
       passive: "トリオミノ",
     },
     chara1: {
       name: "Tester1",
-      skill0: "",
+      skill0: "七種一巡",
       skill1: "",
       skill2: "",
       passive: "なし",
@@ -177,9 +179,11 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,
-    keyrotate: 32,
-    keyuseSkill0: 65,
+    keysetStock: 16,    //Shift
+    keyrotate: 32,      //Space
+    keyuseSkill0: 65,   //A
+    keyCheat: 80,       //P
+    keyRestart: 82,     //R
   },
 };
 /*********************************************
@@ -301,6 +305,16 @@ let methods = {
    */
   setNext() {
     this.block.type = this.next;
+    if (this.fixorder === true) {
+      this.counter += 1;
+      if (this.counter <= 21) {
+        this.next = (this.next <= 6 ? this.next + 1 : 1);
+        return;
+      } else {
+        this.fixorder = false;
+        this.counter = 0;
+      }
+    }
     this.next = Math.floor(Math.random() * 7) + 1;
   },
   /*
@@ -354,14 +368,14 @@ let methods = {
     } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
-    // //チート
-    // else if (event.keyCode === this.handlekey.keyCheat) {
-    //   this.useCheat();
-    // }
-    // //リスタート
-    // else if (event.keyCode === this.handlekey.keyRestart) {
-    //   this.start();
-    // }
+    //チート
+    else if (event.keyCode === this.handlekey.keyCheat) {
+      this.useCheat();
+    }
+    //リスタート
+    else if (event.keyCode === this.handlekey.keyRestart) {
+      this.start();
+    }
   },
   /*
    * 右移動
@@ -440,6 +454,14 @@ let methods = {
     this.initBlock();
   },
   /*
+   * ブロックの順番固定 (3サイクル)
+  */
+  fixOrder() {
+    this.fixorder = true;
+    this.counter = 0;
+    this.setNext();
+  },
+  /*
    * スキルの使用
    */
   //スキル小
@@ -458,6 +480,10 @@ let methods = {
         case "8マスバー生成": {
           this.skills.cost -= skill_cost;
           this.setNewBlock(8);
+        }
+        case "七種一巡": {
+          this.skills.cost -= skill_cost;
+          this.fixOrder();
         }
       }
     }
