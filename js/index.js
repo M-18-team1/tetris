@@ -122,6 +122,8 @@ let data = {
     y: 0,
   },
   next: 0,
+  fixorder: false,
+  counter: 0,
   stock: {
     type: 0,
     stocked: false,
@@ -144,14 +146,14 @@ let data = {
     },
     chara0: {
       name: "Tester0",
-      skill0: "鏡反転",
+      skill0: "七種一巡",
       skill1: "",
       skill2: "",
       passive: "トリオミノ",
     },
     chara1: {
       name: "Tester1",
-      skill0: "鏡反転",
+      skill0: "七種一巡",
       skill1: "",
       skill2: "",
       passive: "なし",
@@ -192,9 +194,11 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,
-    keyrotate: 32,
-    keyuseSkill0: 65,
+    keysetStock: 16,    //Shift
+    keyrotate: 32,      //Space
+    keyuseSkill0: 65,   //A
+    keyCheat: 80,       //P
+    keyRestart: 82,     //R
   },
 };
 /*********************************************
@@ -316,6 +320,16 @@ let methods = {
    */
   setNext() {
     this.block.type = this.next;
+    if (this.fixorder === true) {
+      this.counter += 1;
+      if (this.counter <= 21) {
+        this.next = (this.next <= 6 ? this.next + 1 : 1);
+        return;
+      } else {
+        this.fixorder = false;
+        this.counter = 0;
+      }
+    }
     this.next = Math.floor(Math.random() * 7) + 1;
     this.setPassiveSkillBlocks();
   },
@@ -370,14 +384,14 @@ let methods = {
     } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
-    // //チート
-    // else if (event.keyCode === this.handlekey.keyCheat) {
-    //   this.useCheat();
-    // }
-    // //リスタート
-    // else if (event.keyCode === this.handlekey.keyRestart) {
-    //   this.start();
-    // }
+    //チート
+    else if (event.keyCode === this.handlekey.keyCheat) {
+      this.useCheat();
+    }
+    //リスタート
+    else if (event.keyCode === this.handlekey.keyRestart) {
+      this.start();
+    }
   },
   /*
    * 右移動
@@ -455,6 +469,17 @@ let methods = {
     this.block.type = idx;
     this.initBlock();
   },
+  /*
+   * ブロックの順番固定 (3サイクル)
+  */
+  fixOrder() {
+    this.fixorder = true;
+    this.counter = 0;
+    this.setNext();
+  },
+  /*
+   * 鏡反転
+  */
   mirroring() {
     // Z or L
     switch (this.block.type) {
@@ -470,7 +495,6 @@ let methods = {
       case 7:
         this.setNewBlock(6);
         break;
-    }
   },
   /*
    * スキルの使用
@@ -495,10 +519,9 @@ let methods = {
           }
           break;
         }
-        case "鏡反転": {
+        case "七種一巡": {
           this.skills.cost -= skill_cost;
-          this.mirroring();
-          break;
+          this.fixOrder();
         }
       }
     }
@@ -674,10 +697,12 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
+    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
     //***** characterを設定する
+
     //*****
   },
   beforeDestroy() {
