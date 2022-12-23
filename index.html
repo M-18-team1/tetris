@@ -56,31 +56,35 @@
           <h2>Skill</h2>
           <ul class="child-disp">
             <li>コスト: {{skills.cost}}</li>
-            <li>{{characters.chara_now.skill0}}: 1</li>
-            <li>{{characters.chara_now.skill1}}: 5</li>
-            <li>{{characters.chara_now.skill2}}: 8</li>
-            <li>Passive: {{characters.chara_now.passive}}</li>
+            <li>{{chara_now.skill0}}: 1</li>
+            <li>{{chara_now.skill1}}: 5</li>
+            <li>{{chara_now.skill2}}: 8</li>
+            <li>Passive: {{chara_now.passive}}</li>
           </ul>
         </div>
         <div class="block-disp" style="margin-bottom: 0">
           <h2>Status</h2>
           <ul class="child-disp">
             <li class="">
-              Character:
-
-              <select
-                name="charaSelect"
-              >
-                <option :value="characters.chara0">
-                  {{characters.chara0.name}}
-                </option>
-                <option :value="characters.chara1">
-                  {{characters.chara1.name}}
-                </option>
-                <option :value="characters.chara2">
-                  {{characters.chara2.name}}
-                </option>
-              </select>
+              Character: {{chara_now.name}}
+              <form name="charaForm">
+                <select
+                  name="charaSelect"
+                  onchange="inputValue()"
+                  :disabled="started"
+                 
+                >
+                  <option  v-for="(chara,i) in characters" :key="i" :value="chara" :disabled="started">
+                    {{chara.name}}
+                  </option>
+                  <!-- <option :value="characters.chara1" :disabled="started">
+                    {{characters.chara1.name}}
+                  </option>
+                  <option :value="characters.chara2" :disabled="started">
+                    {{characters.chara2.name}}
+                  </option> -->
+                </select>
+              </form>
             </li>
             <li class="">Score: {{score}}</li>
             <li class="">Level: {{level}}</li>
