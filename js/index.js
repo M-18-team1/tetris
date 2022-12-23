@@ -136,20 +136,20 @@ let data = {
   description: false,
   option: false,
   //キャラクター
+  chara_now: {
+    name: "Tester0",
+    skill0: "8マスバー生成",
+    skill1: "",
+    skill2: "",
+    passive: "なし",
+  },
   characters: {
-    chara_now: {
-      name: "Tester0",
-      skill0: "8マスバー生成",
-      skill1: "",
-      skill2: "",
-      passive: "",
-    },
     chara0: {
       name: "Tester0",
       skill0: "鏡反転",
       skill1: "",
       skill2: "",
-      passive: "",
+      passive: "なし",
     },
     chara1: {
       name: "Tester1",
@@ -159,8 +159,15 @@ let data = {
       passive: "なし",
     },
     chara2: {
-      name: "Tester2",
-      skill0: "",
+      name: "初心者向け",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "トリオミノ",
+    },
+    chara_demo: {
+      name: "デモ用",
+      skill0: "8マスバー生成",
       skill1: "",
       skill2: "",
       passive: "なし",
@@ -204,6 +211,12 @@ let data = {
 /*********************************************
    メソッドオブジェクト
   *********************************************/
+function inputValue() {
+  console.log("input");
+  let index = document.charaForm.charaSelect.selectedIndex;
+  let value = document.charaForm.charaSelect.options[index]._value;
+  data.chara_now = value;
+}
 let methods = {
   /*
    * ゲーム開始
@@ -262,9 +275,6 @@ let methods = {
     // Object.keys(this.skills).forEach((skill) => {
     //   this.skills[skill] = 0;
     // });
-
-    //選択されたキャラクターを最初のキャラクターに
-    this.characters.chara_now = this.characters.chara0;
   },
   /*
    * ブロックを配備
@@ -509,7 +519,7 @@ let methods = {
     // }
     let skill_cost = 1;
     if (skill_cost <= this.skills.cost) {
-      switch (this.characters.chara_now.skill0) {
+      switch (this.chara_now.skill0) {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
@@ -537,7 +547,7 @@ let methods = {
   useSkill1() {
     let skill_cost = 5;
     if (skill_cost <= this.skills.cost) {
-      switch (this.characters.chara_now.skill1) {
+      switch (this.chara_now.skill1) {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
@@ -550,7 +560,7 @@ let methods = {
   useSkill2() {
     let skill_cost = 8;
     if (skill_cost <= this.skills.cost) {
-      switch (this.characters.chara_now.skill2) {
+      switch (this.chara_now.skill2) {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
@@ -560,12 +570,13 @@ let methods = {
     }
   },
   setPassiveSkillBlocks() {
-    switch (this.characters.chara_now.passive) {
+    switch (this.chara_now.passive) {
       case "トリオミノ": {
         this.next = Math.floor(Math.random() * 2) + 9;
       }
     }
   },
+
   /*
    * チート
    */
@@ -704,6 +715,8 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
+    //選択されたキャラクターを最初のキャラクターに
+    this.chara_now = this.characters.chara0;
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
