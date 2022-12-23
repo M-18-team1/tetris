@@ -212,7 +212,6 @@ let data = {
    メソッドオブジェクト
   *********************************************/
 function inputValue() {
-  console.log("input");
   let index = document.charaForm.charaSelect.selectedIndex;
   let value = document.charaForm.charaSelect.options[index]._value;
   data.chara_now = value;
