@@ -71,7 +71,7 @@ const blocks = {
   9: [
     [0, 0, 0, 0, 0],
     [0, 0, 9, 0, 0],
-    [0,9, 9, 0, 0],
+    [0, 9, 9, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
   ],
@@ -146,10 +146,10 @@ let data = {
     },
     chara0: {
       name: "Tester0",
-      skill0: "七種一巡",
+      skill0: "鏡反転",
       skill1: "",
       skill2: "",
-      passive: "トリオミノ",
+      passive: "",
     },
     chara1: {
       name: "Tester1",
@@ -194,11 +194,11 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,    //Shift
-    keyrotate: 32,      //Space
-    keyuseSkill0: 65,   //A
-    keyCheat: 80,       //P
-    keyRestart: 82,     //R
+    keysetStock: 16, //Shift
+    keyrotate: 32, //Space
+    keyuseSkill0: 65, //A
+    keyCheat: 80, //P
+    keyRestart: 82, //R
   },
 };
 /*********************************************
@@ -323,7 +323,7 @@ let methods = {
     if (this.fixorder === true) {
       this.counter += 1;
       if (this.counter <= 21) {
-        this.next = (this.next <= 6 ? this.next + 1 : 1);
+        this.next = this.next <= 6 ? this.next + 1 : 1;
         return;
       } else {
         this.fixorder = false;
@@ -471,7 +471,7 @@ let methods = {
   },
   /*
    * ブロックの順番固定 (3サイクル)
-  */
+   */
   fixOrder() {
     this.fixorder = true;
     this.counter = 0;
@@ -479,7 +479,7 @@ let methods = {
   },
   /*
    * 鏡反転
-  */
+   */
   mirroring() {
     // Z or L
     switch (this.block.type) {
@@ -520,9 +520,15 @@ let methods = {
           }
           break;
         }
+        case "鏡反転": {
+          this.skills.cost -= skill_cost;
+          this.mirroring();
+          break;
+        }
         case "七種一巡": {
           this.skills.cost -= skill_cost;
           this.fixOrder();
+          break;
         }
       }
     }
@@ -698,7 +704,6 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
-    
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
