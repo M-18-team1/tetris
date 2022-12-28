@@ -658,7 +658,8 @@ let methods = {
    * 点数設定
    */
   setScore(num) {
-    this.score += 10 * num ** 3;
+    const normalScore = 10 * num ** 3
+    this.score += this.chara_now.name === '戦士' ?  2 * normalScore : normalScore ;
     if (num >= 2) {
       this.skills.cost += num - 1;
     }
