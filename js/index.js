@@ -67,8 +67,45 @@ const blocks = {
     [0, 0, 0, 0, 8, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ],
+  // パッシブ: トリオミノ
+  9: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 9, 0, 0],
+    [0, 9, 9, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
+  10: [
+    [0, 0, 0, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 10, 0, 0],
+    [0, 0, 0, 0, 0],
+  ],
 };
-
+//説明用
+const testBoard = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [4, 4, 4, 4, 0, 5, 5, 5, 5, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+];
 /*********************************************
    データオブジェクト
   *********************************************/
@@ -85,6 +122,8 @@ let data = {
     y: 0,
   },
   next: 0,
+  fixorder: false,
+  counter: 0,
   stock: {
     type: 0,
     stocked: false,
@@ -96,9 +135,65 @@ let data = {
   level: 1,
   description: false,
   option: false,
-  // スキル0の使用回数
+  //キャラクター
+  chara_now: {
+    name: "",
+    skill0: "",
+    skill1: "",
+    skill2: "",
+    passive: "",
+  },
+  characters: {
+    chara0: {
+      name: "戦士",
+      skill0: "8マスバー生成",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+    chara1: {
+      name: "魔法使い",
+      skill0: "鏡反転",
+      skill1: "",
+      skill2: "",
+      passive: "なし",
+    },
+    chara2: {
+      name: "僧侶",
+      skill0: "七種一巡",
+      skill1: "",
+      skill2: "蘇生",
+      passive: "トリオミノ",
+    },
+    chara_demo: {
+      name: "デモ用",
+      skill0: "8マスバー生成",
+      skill1: "なし",
+      skill2: "なし",
+      passive: "なし",
+    },
+  },
   skills: {
-    skill0: 0,
+    //使用可能なコストの数を示す
+    cost: 10,
+    //skills,passiveの数字はスキルの種類を示す（使用回数ではない）
+    //小
+    // skill0: {
+    //   name: "8マスバー生成",
+    //   cost: 1,
+    // },
+    // //中
+    // skill1: {
+    //   name: "スキル中",
+    //   cost: 5,
+    // },
+    // //大
+    // skill2: {
+    //   name: "スキル大",
+    //   cost: 8,
+    // },
+    //パッシブ
+    // passive: "なし",
   },
   // キーコンフィグの変数を管理
   handlekey: {
@@ -106,14 +201,21 @@ let data = {
     keyleft: 37,
     keydownbottom: 38,
     keydown: 40,
-    keysetStock: 16,
-    keyrotate: 32,
-    keyuseSkill: 65,
+    keysetStock: 16, //Shift
+    keyrotate: 32, //Space
+    keyuseSkill0: 65, //A
+    keyCheat: 80, //P
+    keyRestart: 82, //R
   },
 };
 /*********************************************
    メソッドオブジェクト
   *********************************************/
+function inputValue() {
+  let index = document.charaForm.charaSelect.selectedIndex;
+  let value = document.charaForm.charaSelect.options[index]._value;
+  data.chara_now = value;
+}
 let methods = {
   /*
    * ゲーム開始
@@ -129,9 +231,14 @@ let methods = {
    * 終了処理
    */
   end() {
-    this.started = false;
-    this.gameover = true;
-    this.stopTimer();
+    if (this.chara_now.name === '僧侶' && this.useSkill2()) {
+      return false;
+    } else {
+      this.started = false;
+      this.gameover = true;
+      this.stopTimer();
+      return true;
+    }
   },
   /*
    * タイマーセット
@@ -166,10 +273,12 @@ let methods = {
       type: 0,
       stocked: false,
     };
-    // すべてのスキルの使用可能回数を0に初期化
-    Object.keys(this.skills).forEach((skill) => {
-      this.skills[skill] = 0;
-    })
+    //コストを0に初期化
+    this.skills.cost = 10;
+    // // すべてのスキルの使用可能回数を0に初期化
+    // Object.keys(this.skills).forEach((skill) => {
+    //   this.skills[skill] = 0;
+    // });
   },
   /*
    * ブロックを配備
@@ -184,8 +293,19 @@ let methods = {
    * ブロック初期化
    */
   initBlock() {
-    this.block.x = 2;
-    this.block.y = this.block.type === 1 ? 0 : -1;
+    switch (this.block.type) {
+      case 1:
+        this.block.x = 2;
+        this.block.y = 0;
+        break;
+      case 8:
+        this.block.x = 0;
+        this.block.y = 0;
+        break;
+      default:
+        this.block.x = 2;
+        this.block.y = -1;
+    }
     this.block.data = JSON.parse(JSON.stringify(blocks[this.block.type]));
     while (this.isOverlap()) {
       this.block.y -= 1;
@@ -214,7 +334,18 @@ let methods = {
    */
   setNext() {
     this.block.type = this.next;
+    if (this.fixorder === true) {
+      this.counter += 1;
+      if (this.counter <= 21) {
+        this.next = this.next <= 6 ? this.next + 1 : 1;
+        return;
+      } else {
+        this.fixorder = false;
+        this.counter = 0;
+      }
+    }
     this.next = Math.floor(Math.random() * 7) + 1;
+    this.setPassiveSkillBlocks();
   },
   /*
    * ストックを設定
@@ -264,8 +395,16 @@ let methods = {
     //回転
     else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    } else if (event.keyCode === this.handlekey.keyuseSkill) {
-      this.useSkill();
+    } else if (event.keyCode === this.handlekey.keyuseSkill0) {
+      this.useSkill0();
+    }
+    //チート
+    else if (event.keyCode === this.handlekey.keyCheat) {
+      this.useCheat();
+    }
+    //リスタート
+    else if (event.keyCode === this.handlekey.keyRestart) {
+      this.start();
     }
   },
   /*
@@ -321,8 +460,7 @@ let methods = {
     //ゲームオーバー判定
     const g = this.block.type === 1 ? 0 : -1;
     if (this.block.y < g) {
-      this.end();
-      return;
+      if (this.end()) return;
     }
     //ブロック配置
     this.stock.stocked = false;
@@ -338,14 +476,147 @@ let methods = {
     while (this.down()) {}
   },
   /*
+   * idxブロックを現在のブロックと置き換え
+   */
+  setNewBlock(idx) {
+    this.block.type = idx;
+    this.initBlock();
+  },
+  /*
+   * ブロックの順番固定 (3サイクル)
+   */
+  fixOrder() {
+    this.fixorder = true;
+    this.counter = 0;
+    this.setNext();
+  },
+  /*
+   * 鏡反転
+   */
+  mirroring() {
+    // Z or L
+    switch (this.block.type) {
+      case 4:
+        this.setNewBlock(5);
+        break;
+      case 5:
+        this.setNewBlock(4);
+        break;
+      case 6:
+        this.setNewBlock(7);
+        break;
+      case 7:
+        this.setNewBlock(6);
+        break;
+    }
+  },
+  /**
+   * 最上段まで積み上がってしまった場合に僧侶なら上段4ライン消す
+   */
+  revive() {
+    if (this.chara_now.name === '僧侶') {
+      Array.from(Array(4), (e,i) => i).forEach((num) => {
+        const board_data_row = this.board.data[num];
+        board_data_row.forEach((data,index) => {
+          board_data_row[index] = 0;
+        });
+      });
+    }
+  },
+
+  /*
    * スキルの使用
    */
-  useSkill() {
-    if (this.skills.skill0 >= 1) {
-      this.skills.skill0 -= 1;
-      this.block.type = this.next;
-      this.next = 8;
+  //スキル小
+  useSkill0() {
+    // if (this.skills.skill0 >= 1) {
+    //   this.skills.skill0 -= 1;
+    //   this.block.type = this.next;
+    //   this.next = 8;
+    // }
+    const skill_cost = 1;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.chara_now.skill0) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "8マスバー生成": {
+          if (this.block.type != 8) {
+            this.skills.cost -= skill_cost;
+            this.setNewBlock(8);
+          }
+          break;
+        }
+        case "鏡反転": {
+          this.skills.cost -= skill_cost;
+          this.mirroring();
+          break;
+        }
+        case "七種一巡": {
+          this.skills.cost -= skill_cost;
+          this.fixOrder();
+          break;
+        }
+      }
     }
+  },
+  //スキル中
+  useSkill1() {
+    const skill_cost = 5;
+    if (skill_cost <= this.skills.cost) {
+      switch (this.chara_now.skill1) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+      }
+    }
+  },
+  //スキル大
+  useSkill2() {
+    const skill_cost = 8;
+    // スキル発動できたらtrue, それ以外はfalseを返す
+    if (skill_cost <= this.skills.cost) {
+      switch (this.chara_now.skill2) {
+        // case "実装したいスキル": {
+        // ここに処理を書く
+        // }
+        case "": {
+        }
+        case "蘇生" : {
+          this.skills.cost -= skill_cost;
+          this.revive();
+          break;
+        }
+        default: {
+          console.log('スキル2が設定されていません');
+        }
+      }
+      return true;
+    }else {
+      return false;
+    }
+  },
+  setPassiveSkillBlocks() {
+    switch (this.chara_now.passive) {
+      case "トリオミノ": {
+        this.next = Math.floor(Math.random() * 2) + 9;
+      }
+    }
+  },
+
+  /*
+   * チート
+   */
+  useCheat() {
+    this.clear();
+    this.setNext();
+    this.setBlock();
+    this.started = true;
+    this.skills.skill0 = this.skills.skill1 = this.skills.skill2 = 10;
+    this.board.data = testBoard;
+    this.resetTimer();
   },
   /*
    * 移動可否判定
@@ -417,11 +688,11 @@ let methods = {
    * 点数設定
    */
   setScore(num) {
-    this.score += 10 * num ** 3;
-    if(num >=2){
-      this.skills.skill0 += num-1;
+    const normalScore = 10 * num ** 3
+    this.score += this.chara_now.name === '戦士' ?  2 * normalScore : normalScore ;
+    if (num >= 2) {
+      this.skills.cost += num - 1;
     }
-    
   },
 };
 /*********************************************
@@ -474,9 +745,14 @@ const app = new Vue({
   computed: computed,
   created() {
     this.clear();
+    //選択されたキャラクターを最初のキャラクターに
+    this.chara_now = this.characters.chara0;
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeydown);
+    //***** characterを設定する
+
+    //*****
   },
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleKeydown);
@@ -500,6 +776,10 @@ const app = new Vue({
           return "block-z";
         case 8:
           return "block-8";
+        case 9:
+          return "block-3-i";
+        case 10:
+          return "block-3-j";
         default:
           return "";
       }
