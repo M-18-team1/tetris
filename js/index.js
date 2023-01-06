@@ -162,7 +162,7 @@ let data = {
       name: "僧侶",
       skill0: "七種一巡",
       skill1: "",
-      skill2: "",
+      skill2: "蘇生",
       passive: "トリオミノ",
     },
     chara_demo: {
@@ -231,9 +231,14 @@ let methods = {
    * 終了処理
    */
   end() {
-    this.started = false;
-    this.gameover = true;
-    this.stopTimer();
+    if (this.chara_now.name === '僧侶' && this.useSkill2()) {
+      return false;
+    } else {
+      this.started = false;
+      this.gameover = true;
+      this.stopTimer();
+      return true;
+    }
   },
   /*
    * タイマーセット
@@ -455,8 +460,7 @@ let methods = {
     //ゲームオーバー判定
     const g = this.block.type === 1 ? 0 : -1;
     if (this.block.y < g) {
-      this.end();
-      return;
+      if (this.end()) return;
     }
     //ブロック配置
     this.stock.stocked = false;
@@ -506,6 +510,19 @@ let methods = {
         break;
     }
   },
+  /**
+   * 最上段まで積み上がってしまった場合に僧侶なら上段4ライン消す
+   */
+  revive() {
+    if (this.chara_now.name === '僧侶') {
+      Array.from(Array(4), (e,i) => i).forEach((num) => {
+        const board_data_row = this.board.data[num];
+        board_data_row.forEach((data,index) => {
+          board_data_row[index] = 0;
+        });
+      });
+    }
+  },
   /*
    * スキルの使用
    */
@@ -516,7 +533,7 @@ let methods = {
     //   this.block.type = this.next;
     //   this.next = 8;
     // }
-    let skill_cost = 1;
+    const skill_cost = 1;
     if (skill_cost <= this.skills.cost) {
       switch (this.chara_now.skill0) {
         // case "実装したいスキル": {
@@ -544,7 +561,7 @@ let methods = {
   },
   //スキル中
   useSkill1() {
-    let skill_cost = 5;
+    const skill_cost = 5;
     if (skill_cost <= this.skills.cost) {
       switch (this.chara_now.skill1) {
         // case "実装したいスキル": {
@@ -557,7 +574,8 @@ let methods = {
   },
   //スキル大
   useSkill2() {
-    let skill_cost = 8;
+    const skill_cost = 8;
+    // スキル発動できたらtrue, それ以外はfalseを返す
     if (skill_cost <= this.skills.cost) {
       switch (this.chara_now.skill2) {
         // case "実装したいスキル": {
@@ -565,7 +583,18 @@ let methods = {
         // }
         case "": {
         }
+        case "蘇生" : {
+          this.skills.cost -= skill_cost;
+          this.revive();
+          break;
+        }
+        default: {
+          console.log('スキル2が設定されていません');
+        }
       }
+      return true;
+    }else {
+      return false;
     }
   },
   setPassiveSkillBlocks() {
