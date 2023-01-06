@@ -7,7 +7,7 @@
   <body>
     <div id="app">
       <div class="board">
-        <table>
+        <table style="margin-bottom: 20px">
           <tr v-for="(b, i) in display" :key="i">
             <td
               v-for="(c, j) in b"
@@ -17,6 +17,10 @@
             />
           </tr>
         </table>
+        <button :disabled="started" @click="start" class="start">Start</button>
+        <a class="description-link block-disp" @click="description=true">
+          あそびかた
+        </a>
         <div class="gameover" v-if="gameover">
           <span>GAME OVER</span>
         </div>
@@ -35,11 +39,10 @@
             </tr>
           </table>
         </div>
-        <br />
         <div class="block-disp">
           <h2>Stock</h2>
           <table>
-            <tr v-for="(b, i) in stockBlock" :key="i" >
+            <tr v-for="(b, i) in stockBlock" :key="i">
               <td
                 v-for="(c, j) in b"
                 :key="j"
@@ -49,27 +52,46 @@
             </tr>
           </table>
         </div>
-        <br />
-        <div class="num-disp">
+        <div class="block-disp">
           <h2>Skill</h2>
-          <p>8マスバー生成: {{skills.skill0}}</p>
+          <ul class="child-disp">
+            <li>コスト: {{skills.cost}}</li>
+            <li>{{chara_now.skill0}}: 1</li>
+            <li>{{chara_now.skill1}}: 5</li>
+            <li>{{chara_now.skill2}}: 8</li>
+            <li>Passive: {{chara_now.passive}}</li>
+          </ul>
         </div>
-
-        <div class="num-disp">
-          <h2>Score</h2>
-          <p>{{score}}</p>
+        <div class="block-disp" style="margin-bottom: 0">
+          <h2>Status</h2>
+          <ul class="child-disp">
+            <li class="">
+              Character: {{chara_now.name}}
+              <form name="charaForm">
+                <select
+                  name="charaSelect"
+                  onchange="inputValue()"
+                  :disabled="started"
+                 
+                >
+                  <option  v-for="(chara,i) in characters" :key="i" :value="chara" :disabled="started">
+                    {{chara.name}}
+                  </option>
+                  <!-- <option :value="characters.chara1" :disabled="started">
+                    {{characters.chara1.name}}
+                  </option>
+                  <option :value="characters.chara2" :disabled="started">
+                    {{characters.chara2.name}}
+                  </option> -->
+                </select>
+              </form>
+            </li>
+            <li class="">Score: {{score}}</li>
+            <li class="">Level: {{level}}</li>
+          </ul>
         </div>
-   
-        <div class="num-disp">
-          <h2>Level</h2>
-          <p>{{level}}</p>
-        </div>
-        <br />
-        <button :disabled="started" @click="start" class="start">Start</button>
-        <br />
-        <a class="description-link" @click="description=true">あそびかた</a>
-        <a class="description-link" @click="option=true">オプション</a>
       </div>
+
       <transition name="description">
         <div class="description" v-if="description">
           <h2>あそびかた</h2>
@@ -93,15 +115,8 @@
           <a @click="description=false">閉じる</a>
         </div>
       </transition>
-
-      <transition name="option">
-        <div class="description" v-if="option">
-          <h2>設定</h2>
-
-          <a @click="option=false">閉じる</a>
-        </div>
-      </transition>
     </div>
+    <script></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="./js/index.js"></script>
   </body>

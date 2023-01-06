@@ -1,13 +1,14 @@
 #app {
   display: flex;
-  position: relative;
+  justify-content: center;
 }
 #app > *:first-child {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .board {
-  padding: 30px;
+  border-radius: 10px;
+  padding: 10px;
   background: #1c1c1c;
   position: relative;
 }
@@ -42,18 +43,48 @@
 .block-8 {
   background: #ff00ff;
 }
+.block-3-i {
+  background: #ff0000;
+}
+.block-3-j {
+  background: #00ffff;
+}
 
 .block-disp {
-  padding: 15px;
+  border-radius: 10px;
+  margin: 0 0 10px;
+  padding: 10px;
   background: #1c1c1c;
 }
 .block-disp > h2 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  text-align: center;
   color: #bdc3c7;
-  font-size: 12px;
+  font-size: 16px;
+}
+.block-disp > table {
+  margin-left: auto;
+  margin-right: auto;
 }
 .block-disp .block {
   width: 20px;
   height: 20px;
+}
+.block-disp .child-disp {
+  padding: 0px;
+  background: #1c1c1c;
+}
+.block-disp .child-disp > h2 {
+  color: #bdc3c7;
+  font-size: 16px;
+}
+.block-disp .child-disp > li {
+  list-style: none;
+  background: #252525;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 14px;
 }
 
 .gameover {
@@ -71,27 +102,16 @@
   opacity: 0.9;
 }
 
-.num-disp {
-  padding: 10px;
-  background: #1c1c1c;
-}
-.num-disp > h2 {
-  color: #bdc3c7;
-  font-size: 12px;
-}
-.num-disp > p {
-  background: #252525;
-  padding: 7px;
-  color: #fff;
-}
-
 .start {
+  width: 120px;
   display: block;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
   padding: 10px;
   border: none;
   outline: none;
-  background: #16a085;
+  background: #ff00ff;
   color: white;
   font-size: 20px;
   border-radius: 10px;
@@ -104,6 +124,8 @@
 
 body {
   background: #333;
+  color: white;
+  margin-top: 20px;
 }
 
 .description {
@@ -131,6 +153,17 @@ body {
 }
 .description > ul > li {
   line-height: 30px;
+}
+
+.description-link {
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  margin: 0px auto;
+  padding: 10px;
+  background-color: #999999;
+  color: #fff;
+  text-decoration: none;
 }
 
 a {
