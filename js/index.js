@@ -231,7 +231,7 @@ let methods = {
    * 終了処理
    */
   end() {
-    if (this.chara_now.name === '僧侶' && this.useSkill2()) {
+    if (this.chara_now.name === '僧侶' && this.useSkill2(true)) {
       return false;
     } else {
       this.started = false;
@@ -523,7 +523,6 @@ let methods = {
       });
     }
   },
-
   /*
    * スキルの使用
    */
@@ -574,9 +573,10 @@ let methods = {
     }
   },
   //スキル大
-  useSkill2() {
+  // 蘇生を呼び出す時のみ引数を渡してuseSkill2を呼び出す、それ以外は無引数で呼ぶ
+  useSkill2(revive=false) {
     const skill_cost = 8;
-    // スキル発動できたらtrue, それ以外はfalseを返す
+    // コストが足りていたらtrue, それ以外はfalseを返す
     if (skill_cost <= this.skills.cost) {
       switch (this.chara_now.skill2) {
         // case "実装したいスキル": {
@@ -585,8 +585,10 @@ let methods = {
         case "": {
         }
         case "蘇生" : {
-          this.skills.cost -= skill_cost;
-          this.revive();
+          if (revive) {
+            this.skills.cost -= skill_cost;
+            this.revive();
+          }
           break;
         }
         default: {
