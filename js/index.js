@@ -135,6 +135,7 @@ let data = {
   level: 1,
   description: false,
   option: false,
+  isFeverTime: false,
   //キャラクター
   chara_now: {
     name: "",
@@ -147,7 +148,7 @@ let data = {
     chara0: {
       name: "戦士",
       skill0: "8マスバー生成",
-      skill1: "",
+      skill1: "フィーバータイム",
       skill2: "",
       passive: "なし",
     },
@@ -204,6 +205,7 @@ let data = {
     keysetStock: 16, //Shift
     keyrotate: 32, //Space
     keyuseSkill0: 65, //A
+    keyuseSkill1: 83, //S
     keyCheat: 80, //P
     keyRestart: 82, //R
   },
@@ -398,6 +400,9 @@ let methods = {
     } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     }
+    else if (event.keyCode === this.handlekey.keyuseSkill1) {
+      this.useSkill1();
+    }
     //チート
     else if (event.keyCode === this.handlekey.keyCheat) {
       this.useCheat();
@@ -523,6 +528,15 @@ let methods = {
       });
     }
   },
+
+  fever() {
+    console.log('フィーバータイム中です')
+    this.isFeverTime = true;
+    window.setTimeout(() => {
+      this.isFeverTime=false;
+      console.log('フィーバータイム終了');
+    }, 3000);
+  },
   /*
    * スキルの使用
    */
@@ -567,7 +581,10 @@ let methods = {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
-        case "": {
+        case "フィーバータイム": {
+          this.skills.cost -= skill_cost;
+          this.fever();
+          break;
         }
       }
     }
@@ -691,7 +708,9 @@ let methods = {
    */
   setScore(num) {
     const normalScore = 10 * num ** 3
-    this.score += this.chara_now.name === '戦士' ?  2 * normalScore : normalScore ;
+    const addScore = this.isFeverTime ? 10 * normalScore : normalScore;
+    console.log(this.isFeverTime, addScore);
+    this.score += (this.chara_now.name === '戦士' ?  2 * addScore : addScore);
     if (num >= 2) {
       this.skills.cost += num - 1;
     }
