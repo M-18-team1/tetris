@@ -530,12 +530,10 @@ let methods = {
   },
 
   fever() {
-    console.log('フィーバータイム中です')
     this.isFeverTime = true;
     window.setTimeout(() => {
       this.isFeverTime=false;
-      console.log('フィーバータイム終了');
-    }, 3000);
+    }, 10000);
   },
   /*
    * スキルの使用
