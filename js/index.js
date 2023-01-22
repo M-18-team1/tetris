@@ -552,7 +552,7 @@ let methods = {
     if (this.blockSelect == true) {
       setTimeout(() => {
         this.blockSelect = false;
-      }, 1000);
+      }, 5000);
     }
   },
   /*
