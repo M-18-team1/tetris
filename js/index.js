@@ -136,6 +136,8 @@ let data = {
   description: false,
   option: false,
   isFeverTime: false,
+  blockSelect: false,
+  selectedBlock: 1,
   //キャラクター
   chara_now: {
     name: "",
@@ -155,7 +157,7 @@ let data = {
     chara1: {
       name: "魔法使い",
       skill0: "鏡反転",
-      skill1: "",
+      skill1: "IまたはTブロック生成",
       skill2: "",
       passive: "なし",
     },
@@ -233,7 +235,7 @@ let methods = {
    * 終了処理
    */
   end() {
-    if (this.chara_now.name === '僧侶' && this.useSkill2(true)) {
+    if (this.chara_now.name === "僧侶" && this.useSkill2(true)) {
       return false;
     } else {
       this.started = false;
@@ -399,8 +401,7 @@ let methods = {
       this.rotate();
     } else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
-    }
-    else if (event.keyCode === this.handlekey.keyuseSkill1) {
+    } else if (event.keyCode === this.handlekey.keyuseSkill1) {
       this.useSkill1();
     }
     //チート
@@ -410,6 +411,17 @@ let methods = {
     //リスタート
     else if (event.keyCode === this.handlekey.keyRestart) {
       this.start();
+    }
+    //IまたはTブロック生成
+    else if (this.blockSelect == true) {
+      console.log(this.blockSelect);
+      if (event.keyCode == 81) {
+        this.selectedBlock = 1;
+      } else if (event.keyCode == 87) {
+        this.selectedBlock = 3;
+      }
+      this.block.type = this.selectedBlock;
+      this.initBlock();
     }
   },
   /*
@@ -519,10 +531,10 @@ let methods = {
    * 最上段まで積み上がってしまった場合に僧侶なら上段4ライン消す
    */
   revive() {
-    if (this.chara_now.name === '僧侶') {
-      Array.from(Array(4), (e,i) => i).forEach((num) => {
+    if (this.chara_now.name === "僧侶") {
+      Array.from(Array(4), (e, i) => i).forEach((num) => {
         const board_data_row = this.board.data[num];
-        board_data_row.forEach((data,index) => {
+        board_data_row.forEach((data, index) => {
           board_data_row[index] = 0;
         });
       });
@@ -532,8 +544,16 @@ let methods = {
   fever() {
     this.isFeverTime = true;
     window.setTimeout(() => {
-      this.isFeverTime=false;
+      this.isFeverTime = false;
     }, 10000);
+  },
+  generateBlock() {
+    this.blockSelect = true;
+    if (this.blockSelect == true) {
+      setTimeout(() => {
+        this.blockSelect = false;
+      }, 1000);
+    }
   },
   /*
    * スキルの使用
@@ -584,12 +604,17 @@ let methods = {
           this.fever();
           break;
         }
+        case "IまたはTブロック生成": {
+          this.skills.cost -= skill_cost;
+          this.generateBlock();
+          break;
+        }
       }
     }
   },
   //スキル大
   // 蘇生を呼び出す時のみ引数を渡してuseSkill2を呼び出す、それ以外は無引数で呼ぶ
-  useSkill2(revive=false) {
+  useSkill2(revive = false) {
     const skill_cost = 8;
     // コストが足りていたらtrue, それ以外はfalseを返す
     if (skill_cost <= this.skills.cost) {
@@ -599,7 +624,7 @@ let methods = {
         // }
         case "": {
         }
-        case "蘇生" : {
+        case "蘇生": {
           if (revive) {
             this.skills.cost -= skill_cost;
             this.revive();
@@ -607,11 +632,11 @@ let methods = {
           break;
         }
         default: {
-          console.log('スキル2が設定されていません');
+          console.log("スキル2が設定されていません");
         }
       }
       return true;
-    }else {
+    } else {
       return false;
     }
   },
@@ -705,10 +730,10 @@ let methods = {
    * 点数設定
    */
   setScore(num) {
-    const normalScore = 10 * num ** 3
+    const normalScore = 10 * num ** 3;
     const addScore = this.isFeverTime ? 10 * normalScore : normalScore;
     console.log(this.isFeverTime, addScore);
-    this.score += (this.chara_now.name === '戦士' ?  2 * addScore : addScore);
+    this.score += this.chara_now.name === "戦士" ? 2 * addScore : addScore;
     if (num >= 2) {
       this.skills.cost += num - 1;
     }
