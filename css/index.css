@@ -1,3 +1,9 @@
+@charset "UTF-8";
+/*
+Copyright (c) 2021 b1san
+Released under the MIT license
+URL：https://b1san-blog.com/post/vue/vue-tetris/
+*/
 #app {
   display: flex;
   justify-content: center;
@@ -123,21 +129,21 @@
 }
 
 body {
-  background: #333;
+  background-color: #333;
   color: white;
   margin-top: 20px;
 }
 
 .description {
   color: #fff;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.9);
   z-index: 100;
-  padding: 50px;
+  padding: 30px;
 }
 .description > h2 {
   font-size: 32px;

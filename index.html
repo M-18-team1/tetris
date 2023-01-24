@@ -1,3 +1,8 @@
+<!--
+Copyright (c) 2021 b1san
+Released under the MIT license
+URL：https://b1san-blog.com/post/vue/vue-tetris/
+-->
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -95,7 +100,9 @@
       <transition name="description">
         <div class="description" v-if="description">
           <h2>あそびかた</h2>
+    
           <h3>キー操作</h3>
+          <hr>
           <ul>
             <li>← : 左移動</li>
             <li>→ : 右移動</li>
@@ -103,14 +110,56 @@
             <li>↑ : ハードドロップ</li>
             <li>Space : 回転</li>
             <li>Shift : ストック</li>
-            <li>a : スキルの使用</li>
+            <li>a : スキル（コスト1）の使用</li>
+            <li>s : スキル（コスト5）の使用</li>
+            <li>d : スキル（コスト8）の使用</li>
           </ul>
           <h3>Score</h3>
+          <hr>
           <ul>
             <li>1ライン : 10</li>
             <li>2ライン : 80</li>
             <li>3ライン : 270</li>
             <li>4ライン : 640</li>
+          </ul>
+          <h3>職業・スキル紹介</h3>
+          <hr>
+          <ul>
+            <li>
+              <h4>戦士</h4>
+              <li>
+                8マスバー生成...8マスの直線ブロックを落とす。
+              </li>
+              <li>
+                フィーバータイム...10秒の間得点が3倍になる。
+              </li>
+              <li>
+                爆破...下4マスを消す（得点も入る）。
+              </li>
+            </li>
+            <li>
+              <h4>魔法使い</h4>
+              <li>
+                鏡反転...左右対称のブロックをひっくり返す。
+              </li>
+              <li>
+                IまたはTブロック生成...5秒間の間、Qを押せば直線ブロック、Wを押せばT字型ブロックを生成出来る
+              </li>
+              <li>
+                時間停止...少しの間時を止める。
+              </li>
+            </li>
+            <li>
+              <h4>僧侶</h4>
+              <li>
+                トリオミノ...落ちてくるブロックが4マスではなく3マスのものになる。初心者向け。
+              <li>
+                七種一巡...落ちてくるブロックの順番が固定される。
+              </li>
+              <li>
+                蘇生...ゲームオーバーになるとき、一度だけ上6マスを消して生還できる。
+              </li> 
+            </li>
           </ul>
           <a @click="description=false">閉じる</a>
         </div>
