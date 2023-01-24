@@ -554,6 +554,7 @@ let methods = {
   dio() {
     if (this.chara_now.name == '魔法使い') {
       this.stopTimer();
+    }
   },
   fever() {
     this.isFeverTime = true;
