@@ -1,10 +1,16 @@
+/*
+Copyright (c) 2021 b1san
+Released under the MIT license
+URL：https://b1san-blog.com/post/vue/vue-tetris/
+*/
 const blocks = {
+  
   0: [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],  
   ],
   1: [
     [0, 0, 1, 0, 0],
@@ -535,7 +541,7 @@ let methods = {
    */
   revive() {
     if (this.chara_now.name === "僧侶") {
-      Array.from(Array(4), (e, i) => i).forEach((num) => {
+      Array.from(Array(6), (e, i) => i).forEach((num) => {
         const board_data_row = this.board.data[num];
         board_data_row.forEach((data, index) => {
           board_data_row[index] = 0;
