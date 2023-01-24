@@ -164,10 +164,10 @@ let data = {
     },
     chara2: {
       name: "僧侶",
-      skill0: "七種一巡",
-      skill1: "",
+      skill0: "トリオミノ",
+      skill1: "七種一巡",
       skill2: "蘇生",
-      passive: "トリオミノ",
+      passive: "",
     },
     chara_demo: {
       name: "デモ用",
@@ -598,9 +598,9 @@ let methods = {
           this.mirroring();
           break;
         }
-        case "七種一巡": {
+        case "トリオミノ": {
           this.skills.cost -= skill_cost;
-          this.fixOrder();
+          this.next = Math.floor(Math.random() * 2) + 9;
           break;
         }
       }
@@ -622,6 +622,11 @@ let methods = {
         case "IまたはTブロック生成": {
           this.skills.cost -= skill_cost;
           this.generateBlock();
+          break;
+        }
+        case "七種一巡": {
+          this.skills.cost -= skill_cost;
+          this.fixOrder();
           break;
         }
       }
@@ -662,8 +667,8 @@ let methods = {
   },
   setPassiveSkillBlocks() {
     switch (this.chara_now.passive) {
-      case "トリオミノ": {
-        this.next = Math.floor(Math.random() * 2) + 9;
+      default: {
+
       }
     }
   },
