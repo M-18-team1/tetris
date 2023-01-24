@@ -141,6 +141,7 @@ let data = {
   level: 1,
   description: false,
   option: false,
+  DIO: false,
   isFeverTime: false,
   blockSelect: false,
   selectedBlock: 1,
@@ -164,7 +165,7 @@ let data = {
       name: "魔法使い",
       skill0: "鏡反転",
       skill1: "IまたはTブロック生成",
-      skill2: "",
+      skill2: "時間停止",
       passive: "なし",
     },
     chara2: {
@@ -406,11 +407,18 @@ let methods = {
     //回転
     else if (event.keyCode === this.handlekey.keyrotate) {
       this.rotate();
-    } else if (event.keyCode === this.handlekey.keyuseSkill0) {
+    }
+    else if (event.keyCode === this.handlekey.keyuseSkill0) {
       this.useSkill0();
     } else if (event.keyCode === this.handlekey.keyuseSkill1) {
       this.useSkill1();
     } else if (event.keyCode === this.handlekey.keyuseSkill2) {
+      this.useSkill2();
+    }
+    else if (event.keyCode === this.handlekey.keyuseSkill1) {
+      this.useSkill1();
+    }
+    else if (event.keyCode === this.handlekey.keyuseSkill2) {
       this.useSkill2();
     }
     //チート
@@ -478,7 +486,9 @@ let methods = {
   down() {
     if (this.canMove(this.block.data, this.block.x, this.block.y + 1)) {
       this.block.y += 1;
-      this.resetTimer();
+      if(data.DIO === false) {
+        this.resetTimer();
+      }
       return true;
     }
     //下までたどり着いたら盤面更新
@@ -549,7 +559,11 @@ let methods = {
       });
     }
   },
-
+  dio() {
+    if (this.chara_now.name == '魔法使い') {
+      this.stopTimer();
+    }
+  },
   fever() {
     this.isFeverTime = true;
     window.setTimeout(() => {
@@ -654,7 +668,12 @@ let methods = {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
-        case "": {
+        case "時間停止": {
+          if (data.DIO === false) {
+            data.DIO = true;
+            this.skills.cost -= skill_cost;
+            this.dio();
+          }
         }
         case "蘇生": {
           if (revive) {
