@@ -151,7 +151,7 @@ let data = {
       name: "戦士",
       skill0: "8マスバー生成",
       skill1: "フィーバータイム",
-      skill2: "",
+      skill2: "爆破",
       passive: "なし",
     },
     chara1: {
@@ -173,7 +173,7 @@ let data = {
       skill0: "8マスバー生成",
       skill1: "なし",
       skill2: "なし",
-      passive: "なし",
+      passive: "コスト無限",
     },
   },
   skills: {
@@ -208,6 +208,7 @@ let data = {
     keyrotate: 32, //Space
     keyuseSkill0: 65, //A
     keyuseSkill1: 83, //S
+    keyuseSkill2: 68, //D
     keyCheat: 80, //P
     keyRestart: 82, //R
   },
@@ -403,6 +404,8 @@ let methods = {
       this.useSkill0();
     } else if (event.keyCode === this.handlekey.keyuseSkill1) {
       this.useSkill1();
+    } else if (event.keyCode === this.handlekey.keyuseSkill2) {
+      this.useSkill2();
     }
     //チート
     else if (event.keyCode === this.handlekey.keyCheat) {
@@ -555,6 +558,29 @@ let methods = {
       }, 5000);
     }
   },
+  bomb() {
+    let lines = [];
+    for (let h = 16; h < this.board.y; h++) {
+      let c = 0;
+      for (let v = 0; v < this.board.x; v++) {
+        c += this.board.data[h][v];
+      }
+      if (c > 0) {
+        lines.push(h);
+      }
+    }
+    //ライン消し
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      for (let v = 0; v < this.board.x; v++) {
+        this.board.data[l][v] = 0;
+      }
+      for (let h = l; h > 1; h--) {
+        this.board.data[h] = this.board.data[h - 1];
+      }
+    }
+    this.setScore(lines.length);
+  },
   /*
    * スキルの使用
    */
@@ -631,6 +657,11 @@ let methods = {
           }
           break;
         }
+        case "爆破": {
+          this.skills.cost -= skill_cost;
+          this.bomb();
+          break;
+        }
         default: {
           console.log("スキル2が設定されていません");
         }
@@ -644,6 +675,9 @@ let methods = {
     switch (this.chara_now.passive) {
       case "トリオミノ": {
         this.next = Math.floor(Math.random() * 2) + 9;
+      }
+      case "コスト無限": {
+        this.skills.cost = 10;
       }
     }
   },
@@ -731,8 +765,8 @@ let methods = {
    */
   setScore(num) {
     const normalScore = 10 * num ** 3;
-    const addScore = this.isFeverTime ? 10 * normalScore : normalScore;
-    console.log(this.isFeverTime, addScore);
+    const addScore = this.isFeverTime ? 3 * normal : normalScore;
+    // console.log(this.isFeverTime, addScore);
     this.score += this.chara_now.name === "戦士" ? 2 * addScore : addScore;
     if (num >= 2) {
       this.skills.cost += num - 1;
