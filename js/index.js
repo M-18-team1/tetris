@@ -643,9 +643,6 @@ let methods = {
             this.skills.cost -= skill_cost;
             this.dio();
           }
-          else {
-            console.log("deb");
-          }
         }
         case "蘇生": {
           if (revive) {
