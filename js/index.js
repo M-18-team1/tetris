@@ -4,7 +4,7 @@ Released under the MIT license
 URL：https://b1san-blog.com/post/vue/vue-tetris/
 */
 const blocks = {
-  
+
   0: [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
@@ -184,7 +184,7 @@ let data = {
   },
   skills: {
     //使用可能なコストの数を示す
-    cost: 10,
+    cost: 0,//デモのときは直接ここをいじる
     //skills,passiveの数字はスキルの種類を示す（使用回数ではない）
     //小
     // skill0: {
