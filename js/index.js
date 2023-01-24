@@ -159,7 +159,7 @@ let data = {
       name: "魔法使い",
       skill0: "鏡反転",
       skill1: "IまたはTブロック生成",
-      skill2: "DIO",
+      skill2: "時間停止",
       passive: "なし",
     },
     chara2: {
@@ -637,7 +637,7 @@ let methods = {
         // case "実装したいスキル": {
         // ここに処理を書く
         // }
-        case "DIO": {
+        case "時間停止": {
           if (data.DIO === false) {
             data.DIO = true;
             this.skills.cost -= skill_cost;
