@@ -14,7 +14,7 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
   <body>
     <div id="app">
       <div class="board">
-        <table style="margin-bottom: 20px">
+        <table >
           <tr v-for="(b, i) in display" :key="i">
             <td
               v-for="(c, j) in b"
@@ -25,9 +25,6 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
           </tr>
         </table>
         <button :disabled="started" @click="start" class="start">Start</button>
-        <a class="description-link block-disp" @click="description=true">
-          あそびかた
-        </a>
         <div class="gameover" v-if="gameover">
           <span>GAME OVER</span>
         </div>
@@ -98,10 +95,8 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
         </div>
       </div>
 
-      <transition name="description">
-        <div class="description" v-if="description">
+        <div class="block-disp description">
           <h2>あそびかた</h2>
-    
           <h3>キー操作</h3>
           <hr>
           <ul>
@@ -173,7 +168,6 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
          </div>
           <a style="padding-bottom: 20px;" @click="description=false">閉じる</a>
         </div>
-      </transition>
     </div>
     <script></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>

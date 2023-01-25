@@ -14,9 +14,9 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
 
 .board {
   border-radius: 10px;
+  max-height: 840px;
   padding: 10px;
   background: #1c1c1c;
-  position: relative;
 }
 
 .block {
@@ -113,7 +113,7 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 20px;
+  margin-top: 40px;
   padding: 10px;
   border: none;
   outline: none;
@@ -135,13 +135,15 @@ body {
 }
 
 .description {
+  overflow: auto;
+  max-height: 800px;
   color: #fff;
-  position: absolute;
+  margin-left: 10px;
+  max-width: 600px;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
   z-index: 100;
   padding: 30px;
 }
@@ -167,6 +169,7 @@ body {
   width: 100px;
   margin: 0px auto;
   padding: 10px;
+  margin-bottom: 10px;
   background-color: #999999;
   color: #fff;
   text-decoration: none;
