@@ -179,8 +179,8 @@ let data = {
     chara_demo: {
       name: "デモ用",
       skill0: "8マスバー生成",
-      skill1: "なし",
-      skill2: "なし",
+      skill1: "IまたはTブロック生成",
+      skill2: "蘇生",
       passive: "コスト無限",
     },
   },
@@ -244,7 +244,7 @@ let methods = {
    * 終了処理
    */
   end() {
-    if (this.chara_now.name === "僧侶" && this.useSkill2(true)) {
+    if (this.chara_now.skill2 === "蘇生" && this.useSkill2(true)) {
       return false;
     } else {
       this.started = false;
@@ -287,7 +287,7 @@ let methods = {
       stocked: false,
     };
     //コストを0に初期化
-    this.skills.cost = 10;
+    this.skills.cost = 0;
     // // すべてのスキルの使用可能回数を0に初期化
     // Object.keys(this.skills).forEach((skill) => {
     //   this.skills[skill] = 0;
@@ -551,7 +551,7 @@ let methods = {
    * 最上段まで積み上がってしまった場合に僧侶なら上段4ライン消す
    */
   revive() {
-    if (this.chara_now.name === "僧侶") {
+    if (this.chara_now.skill2 === "蘇生") {
       Array.from(Array(6), (e, i) => i).forEach((num) => {
         const board_data_row = this.board.data[num];
         board_data_row.forEach((data, index) => {
@@ -714,7 +714,9 @@ let methods = {
 
       }
       case "コスト無限": {
+        if (this.chara_now == this.characters.chara_demo) {
         this.skills.cost = 10;
+        }
       }
     }
   },
