@@ -1,5 +1,5 @@
 # テトリス改（仮）
-
+完成品: https://m-18-team1.github.io/tetris/
 ## Vueについて
 https://jp.vuejs.org/v2/guide/index.html
 
