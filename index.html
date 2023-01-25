@@ -47,7 +47,7 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
           </table>
         </div>
         <div class="block-disp">
-          <h2>Stock</h2>
+          <h2>[Shift] Stock</h2>
           <table>
             <tr v-for="(b, i) in stockBlock" :key="i">
               <td
@@ -59,13 +59,14 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
             </tr>
           </table>
         </div>
+
         <div class="block-disp">
           <h2>Skill</h2>
           <ul class="child-disp">
             <li>コスト: {{skills.cost}}</li>
-            <li>{{chara_now.skill0}}: 1</li>
-            <li>{{chara_now.skill1}}: 5</li>
-            <li>{{chara_now.skill2}}: 8</li>
+            <li>[A] {{chara_now.skill0}}: 1</li>
+            <li>[S] {{chara_now.skill1}}: 5</li>
+            <li>[D] {{chara_now.skill2}}: 8</li>
           </ul>
         </div>
         <div class="block-disp" style="margin-bottom: 0">
@@ -78,7 +79,6 @@ URL：https://b1san-blog.com/post/vue/vue-tetris/
                   name="charaSelect"
                   onchange="inputValue()"
                   :disabled="started"
-                 
                 >
                   <option  v-for="(chara,i) in characters" :key="i" :value="chara" :disabled="started">
                     {{chara.name}}
