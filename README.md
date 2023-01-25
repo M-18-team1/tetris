@@ -1,6 +1,8 @@
 # QUATTRO
 名称: QUATTRO
+
 完成品: https://m-18-team1.github.io/tetris/
+
 テトリスに職業・スキルシステムを追加し、よりエキサイティングに遊べるようにした。
 ## Vueについて
 https://jp.vuejs.org/v2/guide/index.html
