@@ -137,6 +137,7 @@ let data = {
   started: false,
   gameover: false,
   intervalId: undefined,
+  dioId: undefined,
   score: 0,
   level: 1,
   description: false,
@@ -562,7 +563,13 @@ let methods = {
   dio() {
     if (this.chara_now.name == '魔法使い') {
       this.stopTimer();
+      this.dioId = setInterval(this.resetDio, 5000);
     }
+  },
+  resetDio() {
+    this.DIO = false;
+    clearInterval(this.dioId);
+    this.resetTimer();
   },
   fever() {
     this.isFeverTime = true;
